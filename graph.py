@@ -4,6 +4,7 @@ class Graph:
     def __init__(self):
         self.vertList = {}
         self.numVertices = 0
+        self.origem = 0
 
     def addVertex(self,key):
         self.numVertices = self.numVertices + 1
@@ -12,13 +13,7 @@ class Graph:
         return newVertex
 
     def getVertex(self,n):
-        if n in self.vertList:
-            return self.vertList[n]
-        else:
-            return None
-
-    def __contains__(self,n):
-        return n in self.vertList
+        return self.vertList[n]
 
     def addEdge(self,f,t,cost1,cost2,generator):
         if f not in self.vertList:
@@ -32,9 +27,24 @@ class Graph:
             self.vertList[t].addNeighbor(self.vertList[f], cost1)
             self.vertList[f].addNeighbor(self.vertList[t], cost2)
 
-
-    def getVertices(self):
+    def getVerticesList(self):
         return self.vertList.keys()
+
+    def getOrigem(self):
+        return self.vertList[self.origem]
+
+    def setOrigem(self, n):
+        self.origem = n
+
+    def getGraph(self):
+        connections=[]
+        for i in range(self.numVertices):
+            connections.append(self.vertList[i].connections())
+
+        return connections
+
+    def __contains__(self,n):
+        return n in self.vertList
 
     def __iter__(self):
         return iter(self.vertList.values())

@@ -2,12 +2,18 @@ class Vertex:
     def __init__(self,key):
         self.id = key
         self.connectedTo = {}
-     
+
     def addNeighbor(self,nbr,weight=0):
         self.connectedTo[nbr] = weight
 
-    def __str__(self):
-        return str(self.id) + ' connectedTo: ' + str([x.id for x in self.connectedTo])
+    def connections(self):
+        vertexConnected=[x.id for x in self.connectedTo]
+        vertexWeight=[self.connectedTo[x] for x in self.connectedTo]
+        connections=[self.id]
+        for i in range(len(vertexConnected)):
+            connections.append([vertexConnected[i],vertexWeight[i]])
+
+        return connections
 
     def getConnections(self):
         return self.connectedTo.keys()
