@@ -86,7 +86,7 @@ def permutations(lista):
 def writeInFile(map,result):
     file = open('grafosTestados.txt', 'a')
     origem = map.getOrigem()
-    file.write("Starts in " + str(origem.getId())+'\n')
+    file.write("Tarefa " + str(tarefa) " and starts in " + str(origem.getId())+'\n')
     for vertice in map.getGraph():
         for i in range(1,len(vertice)):
             file.write(str(vertice[0]) + '------' +str(vertice[i][1]) + '----->' +str(vertice[i][0]) + '\t')
@@ -114,6 +114,6 @@ def main():
     g.gera(num,tarefa)
     map=g.getMap()
     result=shortestPath(map,tarefa)
-    writeInFile(map,result)
+    writeInFile(map,result,tarefa)
 
 main()
