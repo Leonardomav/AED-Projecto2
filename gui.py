@@ -6,28 +6,28 @@ from tkinter import messagebox
 #Still looking for a way to make all of these into 2 functions
 def on_entry_click_0(event):				#Cities Entry
 	"""function that gets called whenever entry is clicked"""
+	entry_cities.config(fg = 'black')
 	if entry_cities.get() == '# of cities':
-		entry_cities.delete(0, "end") # delete all the text in the entry
-		entry_cities.insert(0, '') #Insert blank for user input
-		entry_cities.config(fg = 'black')
+		entry_cities.delete(0, "end") 		#delete all the text in the entry
+		entry_cities.insert(0, '') 			#Insert blank for user input
 
 def on_entry_click_1(event):				#Cenario Entry
+	entry_cenario.config(fg = 'black')
 	if entry_cenario.get() == 'Cenario 1 or 2':
-		entry_cenario.delete(0, "end") # delete all the text in the entry
-		entry_cenario.insert(0, '') #Insert blank for user input
-		entry_cenario.config(fg = 'black')
+		entry_cenario.delete(0, "end")		#delete all the text in the entry
+		entry_cenario.insert(0, '')			#Insert blank for user input
 
 def on_entry_click_2(event):				#Min Distance Entry
+	entry_min_dist.config(fg = 'black')
 	if entry_min_dist.get() == 'Min dist':
-		entry_min_dist.delete(0, "end") # delete all the text in the entry
-		entry_min_dist.insert(0, '') #Insert blank for user input
-		entry_min_dist.config(fg = 'black')
+		entry_min_dist.delete(0, "end")		#delete all the text in the entry
+		entry_min_dist.insert(0, '')		#Insert blank for user input
 
 def on_entry_click_3(event):				#Max Distance Entry
+	entry_max_dist.config(fg = 'black')
 	if entry_max_dist.get() == 'Max dist':
-		entry_max_dist.delete(0, "end") # delete all the text in the entry
-		entry_max_dist.insert(0, '') #Insert blank for user input
-		entry_max_dist.config(fg = 'black')
+		entry_max_dist.delete(0, "end")		#delete all the text in the entry
+		entry_max_dist.insert(0, '')		#Insert blank for user input
 
 
 def on_focusout_0(event):				#Cities Entry
@@ -94,8 +94,9 @@ def check_values():
 		if not max_dist:
 			messagebox.showerror("Invalid Distance", "The value of 'Maximum city distance' is not valid!")
 
-		if not int(entry_min_dist.get()) < int(entry_max_dist.get()):
-			messagebox.showerror("Invalid values", "The 'Minimum city distance' value should be lower than the 'Maximum city distance'!")			
+		if min_dist and max_dist:
+			if not int(entry_min_dist.get()) < int(entry_max_dist.get()):
+				messagebox.showerror("Invalid values", "The 'Minimum city distance' value should be lower than the 'Maximum city distance'!")			
 
 
 ########## ACTUAL TKINTER'S CODE STARTS HERE ##########
@@ -143,7 +144,7 @@ entry_cenario.bind('<FocusIn>',		on_entry_click_1)
 entry_min_dist.bind('<FocusIn>',	on_entry_click_2)
 entry_max_dist.bind('<FocusIn>',	on_entry_click_3)
 
-entry_cities.bind('<FocusOut>',	on_focusout_0)
+entry_cities.bind('<FocusOut>',		on_focusout_0)
 entry_cenario.bind('<FocusOut>',	on_focusout_1)
 entry_min_dist.bind('<FocusOut>',	on_focusout_2)
 entry_max_dist.bind('<FocusOut>',	on_focusout_3)
