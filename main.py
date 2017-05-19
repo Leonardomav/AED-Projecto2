@@ -1,7 +1,8 @@
 import gerador
 import time
+import sys
 
-def shortestPath(map):
+def shortestPath(map,tarefa):
     start = time.time()
     print(map.getGraph())
 
@@ -19,7 +20,7 @@ def shortestPath(map):
         breaker=0
         ride = caminhos[rideIndex]
         temp=None
-        if str(ride[::-1]) not in checked:
+        if (tarefa == 2) or ((str(ride[::-1]) not in checked) and tarefa==1):
             for j in range(len(ride)):
                 if j == 0:
                     if temp == None: #so para teste
@@ -61,8 +62,9 @@ def shortestPath(map):
             checked.add(str(ride))
     timeElapsed = time.time()-start
     short.append(timeElapsed)
-
-    print("Time Elapsed -> " + str(short[2])+"s\n")
+    short[1].insert(0, int(origem.getId()))
+    short[1].append(int(origem.getId()))
+    print("Time Elapsed -> " + str(short[2])+"s")
     print("The shortest path is " + str(short[1]) + " with a size of " + str(short[0]))
 
     return short
@@ -84,7 +86,7 @@ def permutations(lista):
 def writeInFile(map,result):
     file = open('grafosTestados.txt', 'a')
     origem = map.getOrigem()
-    file.write("Starts in " + str(origem.getId())+'\n')
+    file.write("Tarefa " + str(tarefa) " and starts in " + str(origem.getId())+'\n')
     for vertice in map.getGraph():
         for i in range(1,len(vertice)):
             file.write(str(vertice[0]) + '------' +str(vertice[i][1]) + '----->' +str(vertice[i][0]) + '\t')
@@ -111,8 +113,7 @@ def main():
 
     g.gera(num,tarefa)
     map=g.getMap()
-    print(map.getGraph())
-    #result=shortestPath(map)
-    #writeInFile(map,result)
+    result=shortestPath(map,tarefa)
+    writeInFile(map,result,tarefa)
 
 main()
