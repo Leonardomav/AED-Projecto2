@@ -63,6 +63,26 @@ def on_focusout_3(event):				#Max Distance Entry
 		entry_max_dist.config(fg = 'red')
 
 
+########## CHECKBOX STUFF ###########
+def on_check_cenario_1():
+	cenario_2_check.deselect()
+
+def on_check_cenario_2():
+	cenario_1_check.deselect()
+
+# def on_check_algorithm_1():
+# 	brute_opt_check.deselect()
+# 	recursive_check.deselect()
+
+# def on_check_algorithm_2():
+# 	brute_check.deselect()
+# 	recursive_check.deselect()
+
+# def on_check_algorithm_3():
+# 	brute_check.deselect()
+# 	brute_opt_check.deselect()
+
+
 ########## THAT PART OF THE CODE THAT USES THE OTHER .py FILES AND DOES SOMETHING PRODUCTIVE ##########
 def is_int(string):
 	try:
@@ -73,26 +93,28 @@ def is_int(string):
 
 def check_values():
 	cities = is_int(entry_cities.get())
-	cenario = is_int(entry_cenario.get())
+	#cenario = is_int(entry_cenario.get())	#converted into checkboxes
+	cenario = (cenario_1.get() or cenario_2.get())
 	min_dist = is_int(entry_min_dist.get())
 	max_dist =is_int(entry_max_dist.get())
 
 	if (cities and cenario and min_dist and max_dist) and int(entry_min_dist.get()) < int(entry_max_dist.get()):
 		#do execute the program
 		print('hello')
+		print(str(cenario_1.get()) + "   " + str(cenario_2.get()))
 
 	else:
 		if not cities:
-			messagebox.showerror("Invalid City Number", "The value of 'Number of cities' is not valid!")
+			messagebox.showerror("Invalid City Number",	"The value of 'Number of cities' is not valid!")
 
 		if not cenario:
-			messagebox.showerror("Invalid Cenario", "The value of 'Cenario' is not valid!")
+			messagebox.showerror("Invalid Cenario",		"Please select one of the cenarios")
 
 		if not min_dist:
-			messagebox.showerror("Invalid Distance", "The value of 'Minimum city distance' is not valid!")
+			messagebox.showerror("Invalid Distance",	"The value of 'Minimum city distance' is not valid!")
 
 		if not max_dist:
-			messagebox.showerror("Invalid Distance", "The value of 'Maximum city distance' is not valid!")
+			messagebox.showerror("Invalid Distance",	"The value of 'Maximum city distance' is not valid!")
 
 		if min_dist and max_dist:
 			if not int(entry_min_dist.get()) < int(entry_max_dist.get()):
@@ -118,34 +140,49 @@ exit_btn.pack(side=LEFT)		#places the button as far to the left as it can
 
 #Grid for inputs and stuff
 #sticky -> [N,S,W,E]
-
-label_cidades = Label(top_frame,	text="Numero de cidades:   ")
-label_cenario = Label(top_frame,	text="Cenario Pretendido:   ")
-label_dist_cid = Label(top_frame,	text="Distancia entre cidades:   ")
+label_cidades = Label(top_frame,	text="Number of cities:   ")
+label_cenario = Label(top_frame,	text="Cenario:   ")
+label_dist_cid = Label(top_frame,	text="Distance between cities:   ")
+label_algorithm = Label(top_frame,	text="Algorithm to be used:   ")
+label_filler = Label(top_frame,		text="")
 
 
 #Entry boxes text initial color and stuff
 entry_cities = Entry(top_frame,		fg='grey')
-entry_cenario = Entry(top_frame,	fg='grey')
+#entry_cenario = Entry(top_frame,	fg='grey')		#converted into checkboxes
 entry_min_dist = Entry(top_frame,	fg='grey')
 entry_max_dist = Entry(top_frame,	fg='grey')
 
 
 #entry boxes default text
 entry_cities.insert(0,		'# of cities')
-entry_cenario.insert(0,		'Cenario 1 or 2')
+#entry_cenario.insert(0,		'Cenario 1 or 2')	#converted into checkboxes
 entry_min_dist.insert(0,	'Min dist')
 entry_max_dist.insert(0,	'Max dist')
+
+#Var for checkboxes
+cenario_1 = BooleanVar()
+cenario_2 = BooleanVar()
+brute = BooleanVar()
+brute_opt = BooleanVar()
+recursive = BooleanVar()
+
+#Checkboxes for different algorithms
+cenario_1_check = Checkbutton(top_frame,	text="1",						onvalue=True, offvalue=False, variable=cenario_1, command=on_check_cenario_1)
+cenario_2_check = Checkbutton(top_frame,	text="2",						onvalue=True, offvalue=False, variable=cenario_2, command=on_check_cenario_2)
+brute_check = Checkbutton(top_frame,		text="Brute Force ",			onvalue=True, offvalue=False, variable=brute)
+brute_opt_check = Checkbutton(top_frame,	text="Brute Force Optimized",	onvalue=True, offvalue=False, variable=brute_opt)
+recursive_check = Checkbutton(top_frame,	text="Recursive ",				onvalue=True, offvalue=False, variable=recursive)
 
 
 #binds
 entry_cities.bind('<FocusIn>',		on_entry_click_0)
-entry_cenario.bind('<FocusIn>',		on_entry_click_1)
+#entry_cenario.bind('<FocusIn>',	on_entry_click_1)		#converted into checkboxes
 entry_min_dist.bind('<FocusIn>',	on_entry_click_2)
 entry_max_dist.bind('<FocusIn>',	on_entry_click_3)
 
 entry_cities.bind('<FocusOut>',		on_focusout_0)
-entry_cenario.bind('<FocusOut>',	on_focusout_1)
+#entry_cenario.bind('<FocusOut>',	on_focusout_1)			#converted into checkboxes
 entry_min_dist.bind('<FocusOut>',	on_focusout_2)
 entry_max_dist.bind('<FocusOut>',	on_focusout_3)
 
@@ -154,14 +191,23 @@ entry_max_dist.bind('<FocusOut>',	on_focusout_3)
 label_cidades.grid(row=0,	pady=10,	sticky=E)
 label_cenario.grid(row=2,	pady=10,	sticky=E)
 label_dist_cid.grid(row=4,	pady=10,	sticky=E)
+label_algorithm.grid(row=6,	pady=10,	sticky=E)
+label_filler.grid(row=10,	pady=10,	sticky=E)
 
-#grid inputs
+
+#grid Entries
 entry_cities.grid(row=0,	column=1)
-entry_cenario.grid(row=2,	column=1)
+#entry_cenario.grid(row=2,	column=1)		#converted into checkboxes
 entry_min_dist.grid(row=4,	column=1)
 entry_max_dist.grid(row=4,	column=2)
 
 
+#grid checkboxes
+cenario_1_check.grid(row=2,		column=1, sticky=W)
+cenario_2_check.grid(row=2,		column=1, sticky=E)
+brute_check.grid(row=6,			column=1, sticky=W)
+brute_opt_check.grid(row=8,		column=1, sticky=W)
+recursive_check.grid(row=10,	column=1, sticky=W)
 
 
 root.mainloop()	#required to run TkInter
