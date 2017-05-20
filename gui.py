@@ -95,12 +95,26 @@ def check_values():
 	cities = is_int(entry_cities.get())
 	#cenario = is_int(entry_cenario.get())	#converted into checkboxes
 	cenario = (cenario_1.get() or cenario_2.get())
+	algorithm = (brute.get() or brute_opt.get() or recursive.get() or recursive_g.get())
 	#min_dist = is_int(entry_min_dist.get())
 	#max_dist =is_int(entry_max_dist.get())
 
-	if cities and cenario:
+	if cities and cenario and algorithm:
 		#do execute the program
-		run()
+		#0 = brute || 1 = brute_optimised || 2 = recursive || 3 = recursive greedy
+
+		if brute.get():
+			run('Results - Brute Force',				0)
+
+		if brute_opt.get():
+			run('Results - Brute Force Optimized',		1)
+
+		if recursive.get():
+			run('Results - Recursive',					2)
+
+		if recursive_g.get():
+			run('Results - Recursive Greedy',			3)
+
 
 	else:
 		if not cities:
@@ -108,6 +122,10 @@ def check_values():
 
 		if not cenario:
 			messagebox.showerror("Invalid Cenario",		"Please select one of the cenarios")
+
+		if not algorithm:
+			messagebox.showerror("Invalid Algorithm",	"Please select at least one of the algorithms")
+
 
 		# if not min_dist:
 		# 	messagebox.showerror("Invalid Distance",	"The value of 'Minimum city distance' is not valid!")
@@ -119,15 +137,15 @@ def check_values():
 		# 	if not int(entry_min_dist.get()) < int(entry_max_dist.get()):
 		# 		messagebox.showerror("Invalid values",	"The 'Minimum city distance' value should be lower than the 'Maximum city distance'!")
 
-def run():
-    resultdos = main.main(entry_cities.get(), [cenario_1.get(),cenario_2.get()], [brute.get(), brute_opt.get(),recursive.get()])
+def run(window_title, algorithm):
+    results = main.main(entry_cities.get(), [cenario_1.get(), cenario_2.get()], algorithm)
 
     ###Popup Window with results###
     pop_up = Toplevel()
-    pop_up.title("Results")
+    pop_up.title(window_title)
 
 	#Cenas do leo
-    grafo = Message(pop_up, text="CONACONACONACONACONACONACONACONACONACONACONACONACONACONACONACONACONACONACONACONACONACONA o homem ra", width=400)	#Mess arround with the width parameter to fit all your needs
+    grafo = Message(pop_up, text=str(results[0]), width=400)	#Mess arround with the width parameter to fit all your needs
     grafo.grid(row=0, columnspan=4, pady=10, padx=10)
 
 
@@ -138,21 +156,21 @@ def run():
     label_time = Label(pop_up,		text="Calculated in: ")
 
     #Pop-up info to be displayed
-    origin_info = Message(pop_up, 		width=300, text="A")
-    total_dist_info = Message(pop_up, 	width=300, text="50")
-    path_info = Message(pop_up, 		width=300, text="A - B - D - C - E - A")
-    time_info = Message(pop_up, 		width=300, text="0.000005459123")
+    origin_info = Message(pop_up, 		width=300, text=str(results[1]))
+    total_dist_info = Message(pop_up, 	width=300, text=str(results[2]))
+    path_info = Message(pop_up, 		width=300, text=str(results[3]))
+    time_info = Message(pop_up, 		width=300, text=str(results[4]))
 
     #Grid it!
-    label_origin.grid(row=10,	pady=10, sticky=E)
-    label_total_dist.grid(row=12,pady=10, sticky=E)
-    label_path.grid(row=14,		pady=10, sticky=E)
-    label_time.grid(row=16,		pady=10, sticky=E)
+    label_origin.grid(row=10,		pady=10, sticky=E)
+    label_total_dist.grid(row=12,	pady=10, sticky=E)
+    label_path.grid(row=14,			pady=10, sticky=E)
+    label_time.grid(row=16,			pady=10, sticky=E)
 
     origin_info.grid(row=10,		column=2, pady=10, sticky=W)
     total_dist_info.grid(row=12,	column=2, pady=10, sticky=W)
-    path_info.grid(row=14,		column=2, pady=10, sticky=W)
-    time_info.grid(row=16,		column=2, pady=10, sticky=W)
+    path_info.grid(row=14,			column=2, pady=10, sticky=W)
+    time_info.grid(row=16,			column=2, pady=10, sticky=W)
 
 
     btn = Button(pop_up, text="Dismiss", command=pop_up.destroy)
@@ -205,6 +223,7 @@ cenario_2 = BooleanVar()
 brute = BooleanVar()
 brute_opt = BooleanVar()
 recursive = BooleanVar()
+recursive_g = BooleanVar()
 
 #Checkboxes for different algorithms
 cenario_1_check = Checkbutton(top_frame,	text="1",						onvalue=True, offvalue=False, variable=cenario_1, command=on_check_cenario_1)
@@ -212,7 +231,7 @@ cenario_2_check = Checkbutton(top_frame,	text="2",						onvalue=True, offvalue=F
 brute_check = Checkbutton(top_frame,		text="Brute Force ",			onvalue=True, offvalue=False, variable=brute)
 brute_opt_check = Checkbutton(top_frame,	text="Brute Force Optimized",	onvalue=True, offvalue=False, variable=brute_opt)
 recursive_check = Checkbutton(top_frame,	text="Recursive ",				onvalue=True, offvalue=False, variable=recursive)
-
+recursive_g_check = Checkbutton(top_frame,	text="Recursive Greedy",		onvalue=True, offvalue=False, variable=recursive_g)
 
 #binds
 entry_cities.bind('<FocusIn>',		on_entry_click_0)
@@ -247,6 +266,7 @@ cenario_2_check.grid(row=2,		column=1, sticky=E)
 brute_check.grid(row=6,			column=1, sticky=W)
 brute_opt_check.grid(row=8,		column=1, sticky=W)
 recursive_check.grid(row=10,	column=1, sticky=W)
+recursive_g_check.grid(row=12,	column=1, sticky=W)
 
 
 root.mainloop() #required to run TkInter
