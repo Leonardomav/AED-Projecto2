@@ -1,7 +1,6 @@
 import gerador
 import time
-import sys
-
+import os.path
 
 def bruteForce(map):
     origem = map.getOrigem()
@@ -97,7 +96,7 @@ def permutations(lista):
         return [[]]
 
 
-def shortestPathRecursivo(map,atual,visitados,caminhos,distancia):
+def shortestPathRecursivoOld(map,atual,visitados,caminhos,distancia):
     menor=0
 
     if(caminhos!={}):
@@ -165,8 +164,14 @@ def shortestPathRecursivo(map,atual,visitados,caminhos,distancia):
     return caminhos
 
 
-def writeInFile(map,result,mapStr,tarefa):
-    file = open('grafosTestados.txt', 'a')
+def writeInFile(map,result,mapStr,tarefa,numCity,algorithm):
+    fileName = "Tarefa_"+str(tarefa)+"_"+str(numCity)+"_"+str(algorithm)
+
+    if os.path.exists(fileName):
+        file = open(fileName, 'a')
+    else:
+        file = open(fileName, 'w')
+
     origem = map.getOrigem()
     file.write("Tarefa " + str(tarefa) + " and starts in " + str(origem.getId())+' and used the ' + str(result[3])+"\n")
 
@@ -174,14 +179,6 @@ def writeInFile(map,result,mapStr,tarefa):
 
     file.write("The shortest path is " + str(result[1]) + " with a size of " + str(result[0]) + ' and takes '+ str(result[2])+' seconds. \n\n')
     file.close()
-
-def inputInt(str):
-    num = input(str)
-    try:
-        num = int(num)
-        return num
-    except ValueError:
-        return None
 
 def geraMapa(num, cenarios):
 
@@ -198,12 +195,14 @@ def geraMapa(num, cenarios):
 
     return map
 
-def main(map, cenarios, algoritmos):
+def main(map, cenarios, algoritmo):
 
     if cenarios[0]:
         tarefa=1
     elif cenarios[1]:
         tarefa=2
+
+    numCity = len(list(range(map.numVertices)))
 
     mapStr = ""
     for vertice in map.getGraph():
@@ -212,35 +211,35 @@ def main(map, cenarios, algoritmos):
 
         mapStr = mapStr + ('\n')
 
-    if(algoritmos == 3):
+    if(algoritmo == 3):
         start = time.process_time()
         result = shortestPathRecursivo(map,map.getOrigem(),[],{},0)
         timeElapsed=time.process_time()-start
         print("\nFound shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
 
-        forMap1 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Recursivo"]
-        writeInFile(map,forMap1,mapStr,tarefa)
+        forMap1 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Recursivo com Greedy"]
+        writeInFile(map,forMap1,mapStr,tarefa,numCity,algoritmo)
 
         infoForGui = []
         infoForGui.extend([mapStr, map.getOrigem().getId(),min(result.keys()),result[min(result.keys())],str(timeElapsed)])
 
     #--------------------------------------------------------------
-    if(algoritmos == 2):
+    if(algoritmo == 2):
 
         start = time.process_time()
-        result = shortestPathRecursivo(map,map.getOrigem(),[],{},0)
+        result = shortestPathRecursivoOld(map,map.getOrigem(),[],{},0)
         timeElapsed=time.process_time()-start
         print("\nFound shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
 
         forMap1 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Recursivo"]
-        writeInFile(map,forMap1,mapStr,tarefa)
+        writeInFile(map,forMap1,mapStr,tarefa,numCity,algoritmo)
 
         infoForGui = []
         infoForGui.extend([mapStr, map.getOrigem().getId(),min(result.keys()),result[min(result.keys())],str(timeElapsed)])
 
     #--------------------------------------------------------------
 
-    if(algoritmos == 1):
+    if(algoritmo == 1):
         start = time.process_time()
         result=shortestPath(map,tarefa)
         timeElapsed=time.process_time()-start
@@ -248,21 +247,21 @@ def main(map, cenarios, algoritmos):
 
         result.extend([timeElapsed,"Brute Force Optimizado"])
         forMap2=result
-        writeInFile(map,forMap2,mapStr,tarefa)
+        writeInFile(map,forMap2,mapStr,tarefa,numCity,algoritmo)
 
         infoForGui = []
         infoForGui.extend([mapStr, map.getOrigem().getId(),result[0],result[1],str(timeElapsed)])
 
     #--------------------------------------------------------------
 
-    if(algoritmos == 0):
+    if(algoritmo == 0):
         start = time.process_time()
         result = bruteForce(map)
         timeElapsed=time.process_time()-start
         print("\nFound shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
 
         forMap3 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Brute Force"]
-        writeInFile(map,forMap3,mapStr,tarefa)
+        writeInFile(map,forMap3,mapStr,tarefa,numCity,algoritmo)
 
         infoForGui = []
         infoForGui.extend([mapStr, map.getOrigem().getId(),min(result.keys()),result[min(result.keys())],str(timeElapsed)])
