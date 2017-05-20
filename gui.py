@@ -99,10 +99,14 @@ def check_values():
 	#min_dist = is_int(entry_min_dist.get())
 	#max_dist =is_int(entry_max_dist.get())
 
-	if cities and cenario and algorithm and int(entry_cities.get()) > 1:
+	if cities and cenario and algorithm:
 		#do execute the program
 		#0 = brute || 1 = brute_optimised || 2 = recursive || 3 = recursive greedy
 
+		if int(entry_cities.get()) < 2:
+			messagebox.showerror("Invalid City Value",	"The city number must be greater or equal to 2.")
+			return
+			
 		map_graph = main.geraMapa(entry_cities.get(), [cenario_1.get(), cenario_2.get()])
 
 
@@ -120,8 +124,6 @@ def check_values():
 
 
 	else:
-		if int(entry_cities.get()) < 2:
-			messagebox.showerror("Invalid City Value",	"The city number must be greater or equal to 2.")
 
 		if not cities:
 			messagebox.showerror("Invalid City Number",	"The value of 'Number of cities' is not valid!")

@@ -15,7 +15,6 @@ def bruteForce(map):
         ride = caminhos[rideIndex]
 
         for i in range(len(ride)):
-            print(dist)
             if i==0:
                 dist+=origem.getWeight(map.getVertex(ride[i]))
             else:
@@ -193,8 +192,8 @@ def geraMapa(num, cenarios):
     g=gerador.Gerador()
     g.gera(int(num),tarefa)
     map=g.getMap()
-    print(map.getGraph())
-    print("Origem - " +  str(map.getOrigem().getId()))
+    #print(map.getGraph())
+    #print("Origem - " +  str(map.getOrigem().getId()))
 
     return map
 
@@ -260,7 +259,6 @@ def main(map, cenarios, algoritmo):
         start = time.process_time()
         result = bruteForce(map)
         timeElapsed=time.process_time()-start
-        print(result)
         print("\nBruteForce - Found shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
 
         forMap3 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Brute Force"]
