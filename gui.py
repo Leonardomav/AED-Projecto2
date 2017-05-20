@@ -99,7 +99,7 @@ def check_values():
 	#min_dist = is_int(entry_min_dist.get())
 	#max_dist =is_int(entry_max_dist.get())
 
-	if cities and cenario and algorithm:
+	if cities and cenario and algorithm and int(entry_cities.get()) > 1:
 		#do execute the program
 		#0 = brute || 1 = brute_optimised || 2 = recursive || 3 = recursive greedy
 
@@ -120,14 +120,17 @@ def check_values():
 
 
 	else:
+		if int(entry_cities.get()) < 2:
+			messagebox.showerror("Invalid City Value",	"The city number must be greater or equal to 2.")
+
 		if not cities:
 			messagebox.showerror("Invalid City Number",	"The value of 'Number of cities' is not valid!")
 
 		if not cenario:
-			messagebox.showerror("Invalid Cenario",		"Please select one of the cenarios")
+			messagebox.showerror("Invalid Cenario",		"Please select one of the cenarios.")
 
 		if not algorithm:
-			messagebox.showerror("Invalid Algorithm",	"Please select at least one of the algorithms")
+			messagebox.showerror("Invalid Algorithm",	"Please select at least one of the algorithms.")
 
 
 		# if not min_dist:
@@ -148,7 +151,7 @@ def run(window_title, algorithm, map_graph):
 	pop_up.title(window_title)
 
 	#Cenas do leo
-	grafo = Message(pop_up, text=str(results[0]), width=500)	#Mess arround with the width parameter to fit all your needs
+	grafo = Message(pop_up, text=str(results[0]), width=400)	#Mess arround with the width parameter to fit all your needs
 	grafo.grid(row=0, columnspan=4, pady=10, padx=10)
 
 	#Pop-up labels
