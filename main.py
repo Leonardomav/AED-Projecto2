@@ -97,6 +97,36 @@ def permutations(lista):
         return [[]]
 
 
+def shortestPathRecursivoOld(map,atual,visitados,caminhos,distancia):
+    menor=0
+
+    if(caminhos!={}):
+        menor = min(caminhos.keys())
+
+    visited = 0
+    coneccoes = atual.getConnectedTo()
+
+    for vizinho in atual.getConnections():
+
+        if vizinho.getId() not in visitados:
+            peso=atual.getWeight(vizinho)
+            visited = 1
+
+            if(menor==0 or distancia+peso<menor):
+                visitadosN = visitados.copy()
+                visitadosN.append(atual.getId())
+                caminhos=shortestPathRecursivo(map,vizinho, visitadosN, caminhos, distancia + peso)
+
+    if visited != 1:
+        visitados.extend([atual.getId(),visitados[0]])
+        distancia = distancia + atual.getWeight(map.getVertex(visitados[0]))
+
+        caminhos.setdefault(distancia, [])
+        caminhos[distancia].append(visitados)
+
+    return caminhos
+
+
 def shortestPathRecursivo(map,atual,visitados,caminhos,distancia):
     menor=0
 
@@ -104,11 +134,20 @@ def shortestPathRecursivo(map,atual,visitados,caminhos,distancia):
         menor = min(caminhos.keys())
 
     visited = 0
+    coneccoes = dict(atual.getConnectedTo())
 
-    for vizinho in atual.getConnections():
+    while coneccoes != {}:
+        minimo = [None,None]
+        for v in coneccoes.keys():
+            if (minimo == [None,None]) or (minimo[1]>coneccoes[v]):
+                minimo[0] = v
+                minimo[1] = coneccoes[v]
+
+        del coneccoes[minimo[0]]
+        vizinho = minimo[0]
 
         if vizinho.getId() not in visitados:
-            peso=atual.getWeight(vizinho)
+            peso=minimo[1]
             visited = 1
 
             if(menor==0 or distancia+peso<menor):
@@ -148,48 +187,57 @@ def inputInt(str):
         return None
 
 
-def main():
+def main(num, cenarios, algoritmos):
+
+    if cenarios[0]:
+        tarefa=1
+    elif cenarios[1]:
+        tarefa=2
+
     g=gerador.Gerador()
-
-    num = inputInt("\nQuantos vertices quer?\n  >")
-    tarefa = inputInt("\nQue tarefa quer?\n  >")
-
-    g.gera(num,tarefa)
+    g.gera(int(num),tarefa)
     map=g.getMap()
     print(map.getGraph())
     print("Origem - " +  str(map.getOrigem().getId()))
 
     #--------------------------------------------------------------
+    if(algoritmos[2]):
 
-    start = time.process_time()
-    result = shortestPathRecursivo(map,map.getOrigem(),[],{},0)
-    timeElapsed=time.process_time()-start
-    print("\nFound shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
+        start = time.process_time()
+        result = shortestPathRecursivoOld(map,map.getOrigem(),[],{},0)
+        timeElapsed=time.process_time()-start
+        print("\nFound shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
 
-    forMap = [min(result.keys()),result[min(result.keys())],timeElapsed,"Recursivo"]
-    writeInFile(map,forMap,tarefa)
+        forMap1 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Recursivo"]
+        writeInFile(map,forMap1,tarefa)
 
-    #--------------------------------------------------------------
+        start = time.process_time()
+        result = shortestPathRecursivo(map,map.getOrigem(),[],{},0)
+        timeElapsed=time.process_time()-start
+        print("\nFound shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
 
-
-    start = time.process_time()
-    result=shortestPath(map,tarefa)
-    timeElapsed=time.process_time()-start
-    print("\nFound shortest path at " + str(result[1]) + ", with a size of " + str(result[0]) + ", in " + str(timeElapsed) + " seconds.")
-
-    result.extend([timeElapsed,"Brute Force Optimizado"])
-    forMap=result
-    writeInFile(map,forMap,tarefa)
+        forMap1 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Recursivo"]
+        writeInFile(map,forMap1,tarefa)
 
     #--------------------------------------------------------------
 
-    start = time.process_time()
-    result = shortestPathRecursivo(map,map.getOrigem(),[],{},0)
-    timeElapsed=time.process_time()-start
-    print("\nFound shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
+    if(algoritmos[1]):
+        start = time.process_time()
+        result=shortestPath(map,tarefa)
+        timeElapsed=time.process_time()-start
+        print("\nFound shortest path at " + str(result[1]) + ", with a size of " + str(result[0]) + ", in " + str(timeElapsed) + " seconds.")
 
-    forMap = [min(result.keys()),result[min(result.keys())],timeElapsed,"Brute Force"]
-    writeInFile(map,forMap,tarefa)
+        result.extend([timeElapsed,"Brute Force Optimizado"])
+        forMap2=result
+        writeInFile(map,forMap2,tarefa)
 
+    #--------------------------------------------------------------
 
-main()
+    if(algoritmos[0]):
+        start = time.process_time()
+        result = bruteForce(map)
+        timeElapsed=time.process_time()-start
+        print("\nFound shortest path at " + str(result[min(result.keys())]) + ", with a size of " + str(min(result.keys())) + ", in " + str(timeElapsed) + " seconds.")
+
+        forMap3 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Brute Force"]
+        writeInFile(map,forMap3,tarefa)
