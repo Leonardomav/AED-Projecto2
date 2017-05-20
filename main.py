@@ -170,7 +170,7 @@ def writeInFile(map,result,mapStr,tarefa):
     origem = map.getOrigem()
     file.write("Tarefa " + str(tarefa) + " and starts in " + str(origem.getId())+' and used the ' + str(result[3])+"\n")
 
-    file.write('mapStr')
+    file.write(mapStr)
 
     file.write("The shortest path is " + str(result[1]) + " with a size of " + str(result[0]) + ' and takes '+ str(result[2])+' seconds. \n\n')
     file.close()
@@ -208,7 +208,7 @@ def main(map, cenarios, algoritmos):
     mapStr = ""
     for vertice in map.getGraph():
         for i in range(1,len(vertice)):
-            MapStr = MapStr + (str(vertice[0]) + '-' +str(vertice[i][1]) + '->' +str(vertice[i][0]) + ' ')
+            mapStr = mapStr + (str(vertice[0]) + '-' +str(vertice[i][1]) + '->' +str(vertice[i][0]) + '  ')
 
         mapStr = mapStr + ('\n')
 
@@ -221,6 +221,9 @@ def main(map, cenarios, algoritmos):
         forMap1 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Recursivo"]
         writeInFile(map,forMap1,mapStr,tarefa)
 
+        infoForGui = []
+        infoForGui.extend([mapStr, map.getOrigem().getId(),min(result.keys()),result[min(result.keys())],str(timeElapsed)])
+
     #--------------------------------------------------------------
     if(algoritmos == 2):
 
@@ -231,6 +234,9 @@ def main(map, cenarios, algoritmos):
 
         forMap1 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Recursivo"]
         writeInFile(map,forMap1,mapStr,tarefa)
+
+        infoForGui = []
+        infoForGui.extend([mapStr, map.getOrigem().getId(),min(result.keys()),result[min(result.keys())],str(timeElapsed)])
 
     #--------------------------------------------------------------
 
@@ -244,6 +250,9 @@ def main(map, cenarios, algoritmos):
         forMap2=result
         writeInFile(map,forMap2,mapStr,tarefa)
 
+        infoForGui = []
+        infoForGui.extend([mapStr, map.getOrigem().getId(),result[0],result[1],str(timeElapsed)])
+
     #--------------------------------------------------------------
 
     if(algoritmos == 0):
@@ -255,7 +264,7 @@ def main(map, cenarios, algoritmos):
         forMap3 = [min(result.keys()),result[min(result.keys())],timeElapsed,"Brute Force"]
         writeInFile(map,forMap3,mapStr,tarefa)
 
-    infoForGui = []
-    infoForGui.append(mapStr, map.getOrigem().getId(),min(result.keys()),result[min(result.keys()),str(timeElapsed))
+        infoForGui = []
+        infoForGui.extend([mapStr, map.getOrigem().getId(),min(result.keys()),result[min(result.keys())],str(timeElapsed)])
 
     return infoForGui

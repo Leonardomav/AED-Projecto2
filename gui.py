@@ -103,17 +103,20 @@ def check_values():
 		#do execute the program
 		#0 = brute || 1 = brute_optimised || 2 = recursive || 3 = recursive greedy
 
+		map_graph = main.geraMapa(entry_cities.get(), [cenario_1.get(), cenario_2.get()])
+
+
 		if brute.get():
-			run('Results - Brute Force',				0)
+			run('Results - Brute Force',				0, map_graph)
 
 		if brute_opt.get():
-			run('Results - Brute Force Optimized',		1)
+			run('Results - Brute Force Optimized',		1, map_graph)
 
 		if recursive.get():
-			run('Results - Recursive',					2)
+			run('Results - Recursive',					2, map_graph)
 
 		if recursive_g.get():
-			run('Results - Recursive Greedy',			3)
+			run('Results - Recursive Greedy',			3, map_graph)
 
 
 	else:
@@ -137,44 +140,43 @@ def check_values():
 		# 	if not int(entry_min_dist.get()) < int(entry_max_dist.get()):
 		# 		messagebox.showerror("Invalid values",	"The 'Minimum city distance' value should be lower than the 'Maximum city distance'!")
 
-def run(window_title, algorithm):
-    results = main.main(entry_cities.get(), [cenario_1.get(), cenario_2.get()], algorithm)
+def run(window_title, algorithm, map_graph):
+	results = main.main(map_graph, [cenario_1.get(), cenario_2.get()], algorithm)
 
-    ###Popup Window with results###
-    pop_up = Toplevel()
-    pop_up.title(window_title)
+	###Popup Window with results###
+	pop_up = Toplevel()
+	pop_up.title(window_title)
 
 	#Cenas do leo
-    grafo = Message(pop_up, text=str(results[0]), width=400)	#Mess arround with the width parameter to fit all your needs
-    grafo.grid(row=0, columnspan=4, pady=10, padx=10)
-
+	grafo = Message(pop_up, text=str(results[0]), width=500)	#Mess arround with the width parameter to fit all your needs
+	grafo.grid(row=0, columnspan=4, pady=10, padx=10)
 
 	#Pop-up labels
-    label_origin = Label(pop_up,    text="City of origin: ")
-    label_total_dist = Label(pop_up,text="Total distance: ")
-    label_path = Label(pop_up,		text="Route chosen: ")
-    label_time = Label(pop_up,		text="Calculated in: ")
+	label_origin = Label(pop_up,	text="City of origin: ")
+	label_total_dist = Label(pop_up,text="Total distance: ")
+	label_path = Label(pop_up,		text="Route chosen: ")
+	label_time = Label(pop_up,		text="Calculated in: ")
 
-    #Pop-up info to be displayed
-    origin_info = Message(pop_up, 		width=300, text=str(results[1]))
-    total_dist_info = Message(pop_up, 	width=300, text=str(results[2]))
-    path_info = Message(pop_up, 		width=300, text=str(results[3]))
-    time_info = Message(pop_up, 		width=300, text=str(results[4]))
+	#Pop-up info to be displayed
+	origin_info = Message(pop_up, 		width=300, text=str(results[1]))
+	total_dist_info = Message(pop_up, 	width=300, text=str(results[2]))
+	path_info = Message(pop_up, 		width=300, text=str(results[3]))
+	time_info = Message(pop_up, 		width=300, text=str(results[4]))
 
-    #Grid it!
-    label_origin.grid(row=10,		pady=10, sticky=E)
-    label_total_dist.grid(row=12,	pady=10, sticky=E)
-    label_path.grid(row=14,			pady=10, sticky=E)
-    label_time.grid(row=16,			pady=10, sticky=E)
+	#Grid it!
+	label_origin.grid(row=10,		pady=10, sticky=E)
+	label_total_dist.grid(row=12,	pady=10, sticky=E)
+	label_path.grid(row=14,			pady=10, sticky=E)
+	label_time.grid(row=16,			pady=10, sticky=E)
 
-    origin_info.grid(row=10,		column=2, pady=10, sticky=W)
-    total_dist_info.grid(row=12,	column=2, pady=10, sticky=W)
-    path_info.grid(row=14,			column=2, pady=10, sticky=W)
-    time_info.grid(row=16,			column=2, pady=10, sticky=W)
+	origin_info.grid(row=10,		column=2, pady=10, sticky=W)
+	total_dist_info.grid(row=12,	column=2, pady=10, sticky=W)
+	path_info.grid(row=14,			column=2, pady=10, sticky=W)
+	time_info.grid(row=16,			column=2, pady=10, sticky=W)
 
 
-    btn = Button(pop_up, text="Dismiss", command=pop_up.destroy)
-    btn.grid(row=100,	pady=10, column=1, sticky=W)
+	btn = Button(pop_up, text="Dismiss", command=pop_up.destroy)
+	btn.grid(row=100,	pady=10, column=1, sticky=W)
 
 
 ########## ACTUAL TKINTER'S CODE STARTS HERE (Most of it anyways)##########
