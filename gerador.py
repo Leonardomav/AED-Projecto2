@@ -1,10 +1,10 @@
 import random
-import vertex
-import graph
+import cidade
+import mapa
 
 class Gerador:
     def __init__(self):
-        self.map=graph.Graph()
+        self.map=mapa.Graph()
         self.numCity=0
 
     def gera(self,n,flag):
@@ -32,9 +32,6 @@ class Gerador:
                         self.map.addEdge(i,j,cost,costN,flag)
 
         self.map.setOrigem(random.randint(0,self.numCity-1))
-
-    def getNumCity(self):
-        return numCity;
 
     def getMap(self):
         return self.map

@@ -1,4 +1,4 @@
-import vertex
+import cidade
 
 class Graph:
     def __init__(self):
@@ -8,7 +8,7 @@ class Graph:
 
     def addVertex(self,key):
         self.numVertices = self.numVertices + 1
-        newVertex = vertex.Vertex(key)
+        newVertex = cidade.Vertex(key)
         self.vertList[key] = newVertex
         return newVertex
 
@@ -42,9 +42,3 @@ class Graph:
             connections.append(self.vertList[i].connections())
 
         return connections
-
-    def __contains__(self,n):
-        return n in self.vertList
-
-    def __iter__(self):
-        return iter(self.vertList.values())
