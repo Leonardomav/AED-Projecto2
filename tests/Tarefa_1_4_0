@@ -1,0 +1,14 @@
+Tarefa 1 and starts in 2 and used the Brute Force
+0-24->1  0-10->2  0-42->3  
+1-24->0  1-25->2  1-34->3  
+2-10->0  2-25->1  2-31->3  
+3-42->0  3-34->1  3-31->2  
+The shortest path is [[0, 1, 3], [3, 1, 0]] with a size of 99 and takes 0.0 seconds. 
+
+Tarefa 1 and starts in 2 and used the Brute Force
+0-10->2  0-39->3  0-33->1  
+1-33->0  1-29->3  1-25->2  
+2-10->0  2-11->3  2-25->1  
+3-39->0  3-11->2  3-29->1  
+The shortest path is [[0, 1, 3], [3, 1, 0]] with a size of 83 and takes 0.0 seconds. 
+

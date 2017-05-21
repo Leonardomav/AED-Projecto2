@@ -1,0 +1,5 @@
+Tarefa 2 and starts in 0 and used the Brute Force
+0-19->1  
+1-11->0  
+The shortest path is [[0, 1, 0]] with a size of 30 and takes 0.0 seconds. 
+

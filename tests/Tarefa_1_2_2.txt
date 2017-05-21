@@ -1,0 +1,5 @@
+Tarefa 1 and starts in 1 and used the Recursivo
+0-19->1  
+1-19->0  
+The shortest path is [[1, 0, 1]] with a size of 38 and takes 0.0 seconds. 
+
