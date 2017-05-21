@@ -106,7 +106,7 @@ def check_values():
 		if int(entry_cities.get()) < 2:
 			messagebox.showerror("Invalid City Value",	"The city number must be greater or equal to 2.")
 			return
-			
+
 		map_graph = main.geraMapa(entry_cities.get(), [cenario_1.get(), cenario_2.get()])
 
 
@@ -124,6 +124,9 @@ def check_values():
 
 
 	else:
+		if cities:
+			if int(entry_cities.get()) < 2:
+				messagebox.showerror("Invalid City Value",	"The city number must be greater or equal to 2.")
 
 		if not cities:
 			messagebox.showerror("Invalid City Number",	"The value of 'Number of cities' is not valid!")
