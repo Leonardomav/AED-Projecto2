@@ -17,18 +17,6 @@ def on_entry_click_1(event):				#Cenario Entry
 		entry_cenario.delete(0, "end")		#delete all the text in the entry
 		entry_cenario.insert(0, '')			#Insert blank for user input
 
-# def on_entry_click_2(event):				#Min Distance Entry
-# 	entry_min_dist.config(fg = 'black')
-# 	if entry_min_dist.get() == 'Min dist':
-# 		entry_min_dist.delete(0, "end")		#delete all the text in the entry
-# 		entry_min_dist.insert(0, '')		#Insert blank for user input
-
-# def on_entry_click_3(event):				#Max Distance Entry
-# 	entry_max_dist.config(fg = 'black')
-# 	if entry_max_dist.get() == 'Max dist':
-# 		entry_max_dist.delete(0, "end")		#delete all the text in the entry
-# 		entry_max_dist.insert(0, '')		#Insert blank for user input
-
 
 def on_focusout_0(event):				#Cities Entry
 	if entry_cities.get() == '':
@@ -46,22 +34,6 @@ def on_focusout_1(event):				#Cenario Entry
 	elif not is_int(entry_cenario.get()):	#If the input isn't valid, the text goes red
 		entry_cenario.config(fg = 'red')
 
-# def on_focusout_2(event):				#Min Distance Entry
-# 	if entry_min_dist.get() == '':
-# 		entry_min_dist.insert(0, 'Min dist')
-# 		entry_min_dist.config(fg = 'grey')
-
-# 	elif not is_int(entry_min_dist.get()):	#If the input isn't valid, the text goes red
-# 		entry_min_dist.config(fg = 'red')
-
-# def on_focusout_3(event):				#Max Distance Entry
-# 	if entry_max_dist.get() == '':
-# 		entry_max_dist.insert(0, 'Max dist')
-# 		entry_max_dist.config(fg = 'grey')
-
-# 	elif not is_int(entry_max_dist.get()):	#If the input isn't valid, the text goes red
-# 		entry_max_dist.config(fg = 'red')
-
 
 ########## CHECKBOX STUFF ###########
 def on_check_cenario_1():
@@ -69,18 +41,6 @@ def on_check_cenario_1():
 
 def on_check_cenario_2():
 	cenario_1_check.deselect()
-
-# def on_check_algorithm_1():
-# 	brute_opt_check.deselect()
-# 	recursive_check.deselect()
-
-# def on_check_algorithm_2():
-# 	brute_check.deselect()
-# 	recursive_check.deselect()
-
-# def on_check_algorithm_3():
-# 	brute_check.deselect()
-# 	brute_opt_check.deselect()
 
 
 #J#M#S#M#o#n#t#e#i#r#o# THAT PART OF THE CODE THAT USES THE OTHER .py FILES AND DOES SOMETHING PRODUCTIVE #J#M#S#M#o#n#t#e#i#r#o#
@@ -93,11 +53,8 @@ def is_int(string):
 
 def check_values():
 	cities = is_int(entry_cities.get())
-	#cenario = is_int(entry_cenario.get())	#converted into checkboxes
 	cenario = (cenario_1.get() or cenario_2.get())
 	algorithm = (brute.get() or brute_opt.get() or recursive.get() or recursive_g.get())
-	#min_dist = is_int(entry_min_dist.get())
-	#max_dist =is_int(entry_max_dist.get())
 
 	if cities and cenario and algorithm:
 		#do execute the program
@@ -138,26 +95,12 @@ def check_values():
 			messagebox.showerror("Invalid Algorithm",	"Please select at least one of the algorithms.")
 
 
-		# if not min_dist:
-		# 	messagebox.showerror("Invalid Distance",	"The value of 'Minimum city distance' is not valid!")
-
-		# if not max_dist:
-		# # 	messagebox.showerror("Invalid Distance",	"The value of 'Maximum city distance' is not valid!")
-
-		# if min_dist and max_dist:
-		# 	if not int(entry_min_dist.get()) < int(entry_max_dist.get()):
-		# 		messagebox.showerror("Invalid values",	"The 'Minimum city distance' value should be lower than the 'Maximum city distance'!")
-
 def run(window_title, algorithm, map_graph):
 	results = main.main(map_graph, [cenario_1.get(), cenario_2.get()], algorithm)
 
 	###Popup Window with results###
 	pop_up = Toplevel()
 	pop_up.title(window_title)
-
-	#Cenas do leo
-	grafo = Message(pop_up, text=str(results[0]), width=400)	#Mess arround with the width parameter to fit all your needs
-	grafo.grid(row=0, columnspan=4, pady=10, padx=10)
 
 	#Pop-up labels
 	label_origin = Label(pop_up,	text="City of origin: ")
@@ -166,6 +109,7 @@ def run(window_title, algorithm, map_graph):
 	label_time = Label(pop_up,		text="Calculated in: ")
 
 	#Pop-up info to be displayed
+	grafo_info = Message(pop_up, 		width=400, text=str(results[0]))	#Mess arround with the width parameter to fit all your needs
 	origin_info = Message(pop_up, 		width=300, text=str(results[1]))
 	total_dist_info = Message(pop_up, 	width=300, text=str(results[2]))
 	path_info = Message(pop_up, 		width=300, text=str(results[3]))
@@ -177,6 +121,7 @@ def run(window_title, algorithm, map_graph):
 	label_path.grid(row=14,			pady=10, sticky=E)
 	label_time.grid(row=16,			pady=10, sticky=E)
 
+	grafo_info.grid(row=0, 			columnspan=4, pady=10, padx=10)
 	origin_info.grid(row=10,		column=2, pady=10, sticky=W)
 	total_dist_info.grid(row=12,	column=2, pady=10, sticky=W)
 	path_info.grid(row=14,			column=2, pady=10, sticky=W)
@@ -209,23 +154,18 @@ exit_btn.pack(side=LEFT)		#places the button as far to the left as it can
 #sticky -> [N,S,W,E]
 label_cities = Label(top_frame,		text="Number of cities:   ")
 label_cenario = Label(top_frame,	text="Cenario:   ")
-#label_dist_cid = Label(top_frame,	text="Distance between cities:   ")
 label_algorithm = Label(top_frame,	text="Algorithm to be used:   ")
 label_filler = Label(top_frame,		text="")
 
 
 #Entry boxes text initial color and stuff
 entry_cities = Entry(top_frame,		fg='grey')
-#entry_cenario = Entry(top_frame,	fg='grey')		#converted into checkboxes
 entry_min_dist = Entry(top_frame,	fg='grey')
 entry_max_dist = Entry(top_frame,	fg='grey')
 
 
 #entry boxes default text
 entry_cities.insert(0,		'# of cities')
-#entry_cenario.insert(0,		'Cenario 1 or 2')	#converted into checkboxes
-#entry_min_dist.insert(0,	'Min dist')
-#entry_max_dist.insert(0,	'Max dist')
 
 #Var for checkboxes
 cenario_1 = BooleanVar()
@@ -245,30 +185,18 @@ recursive_g_check = Checkbutton(top_frame,	text="Recursive Greedy",		onvalue=Tru
 
 #binds
 entry_cities.bind('<FocusIn>',		on_entry_click_0)
-#entry_cenario.bind('<FocusIn>',	on_entry_click_1)		#converted into checkboxes
-#entry_min_dist.bind('<FocusIn>',	on_entry_click_2)
-#entry_max_dist.bind('<FocusIn>',	on_entry_click_3)
 
 entry_cities.bind('<FocusOut>',		on_focusout_0)
-#entry_cenario.bind('<FocusOut>',	on_focusout_1)			#converted into checkboxes
-#entry_min_dist.bind('<FocusOut>',	on_focusout_2)
-#entry_max_dist.bind('<FocusOut>',	on_focusout_3)
-
 
 #grid labels
 label_cities.grid(row=0,	pady=10,	sticky=E)
 label_cenario.grid(row=2,	pady=10,	sticky=E)
-#label_dist_cid.grid(row=4,	pady=10,	sticky=E)
 label_algorithm.grid(row=6,	pady=10,	sticky=E)
 label_filler.grid(row=10,	pady=10,	sticky=E)
 
 
 #grid Entries
 entry_cities.grid(row=0,	column=1)
-#entry_cenario.grid(row=2,	column=1)		#converted into checkboxes
-#entry_min_dist.grid(row=4,	column=1)
-#entry_max_dist.grid(row=4,	column=2)
-
 
 #grid checkboxes
 cenario_1_check.grid(row=2,		column=1, sticky=W)
