@@ -192,8 +192,8 @@ def geraMapa(num, cenarios):
     g=gerador.Gerador()
     g.gera(int(num),tarefa)
     map=g.getMap()
-    #print(map.getGraph())
-    #print("Origem - " +  str(map.getOrigem().getId()))
+    print(map.getGraph())
+    print("Origem - " +  str(map.getOrigem().getId()))
 
     return map
 
